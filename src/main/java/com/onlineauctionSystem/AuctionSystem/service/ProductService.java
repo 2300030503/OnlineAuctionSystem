@@ -19,7 +19,7 @@ public class ProductService {
     public List<Products> getFilteredProducts(String category, String priceRange) {
         List<Products> products = productRepository.findAll();
 
-        if (category != null && !category.isEmpty()) {
+       /* if (category != null && !category.isEmpty()) {
             products = productRepository.findByCategory(category);
         }
 
@@ -28,7 +28,7 @@ public class ProductService {
             Double minPrice = Double.parseDouble(priceParts[0]);
             Double maxPrice = Double.parseDouble(priceParts[1]);
             products = productRepository.findByPriceBetween(minPrice, maxPrice);
-        }
+        }*/
 
         return products;
     }
