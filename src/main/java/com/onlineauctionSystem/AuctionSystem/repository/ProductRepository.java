@@ -2,11 +2,16 @@ package com.onlineauctionSystem.AuctionSystem.repository;
 
 import com.onlineauctionSystem.AuctionSystem.Entity.Products;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+
 import java.util.List;
+
 
 public interface  ProductRepository extends MongoRepository<Products, Integer> {
 
-   /* List<Products> findByCategory(String category);
+    @Query("{ 'name': { '$regex': ?0, '$options': 'i' } }")
+    List<Products> findByNameContaining(String name);
 
-    List<Products> findByPriceBetween(Double minPrice, Double maxPrice);*/
+    @Query("{ 'price': { '$lte': ?0 } }")
+    List<Products> findByPriceLessThanEqual(double price);
 }

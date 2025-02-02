@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -16,25 +17,35 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<Products> getFilteredProducts(String category, String priceRange) {
-        List<Products> products = productRepository.findAll();
-
-       /* if (category != null && !category.isEmpty()) {
-            products = productRepository.findByCategory(category);
-        }
-
-        if (priceRange != null && !priceRange.isEmpty()) {
-            String[] priceParts = priceRange.split("-");
-            Double minPrice = Double.parseDouble(priceParts[0]);
-            Double maxPrice = Double.parseDouble(priceParts[1]);
-            products = productRepository.findByPriceBetween(minPrice, maxPrice);
-        }*/
-
-        return products;
+    public List<Products> getProductsByName(String name) {
+        return productRepository.findByNameContaining(name);
     }
 
-    public Products saveProduct(Products product) {
-        return productRepository.save(product);
+    public List<Products> getProductsByPrice(double price) {
+        return productRepository.findByPriceLessThanEqual(price);
+    }
+
+    public Products saveProduct(Products products) {
+        return productRepository.save(products);
+    }
+
+
+    public void deleteProduct(Integer id) {
+        productRepository.deleteById(id);
+    }
+
+    public Products updateProduct(Integer id, Products products) {
+        Optional<Products> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()) {
+            Products existingProduct = optionalProduct.get();
+            existingProduct.setName(products.getName());
+            existingProduct.setDescription(products.getDescription());
+         //   existingProduct.setPrice(productDetails.getPrice());
+            // Update other fields as necessary
+            return productRepository.save(existingProduct);
+        } else {
+            throw new RuntimeException("Product not found with id " + id);
+        }
     }
 
 
