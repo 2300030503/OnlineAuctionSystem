@@ -16,6 +16,16 @@ public class Products{
     private String name;
     private String description;
 
+    private int price;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
