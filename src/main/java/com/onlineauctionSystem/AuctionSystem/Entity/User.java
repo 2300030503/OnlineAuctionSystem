@@ -1,5 +1,7 @@
 package com.onlineauctionSystem.AuctionSystem.Entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.onlineauctionSystem.AuctionSystem.component.GrantedAuthorityDeserializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,13 +26,25 @@ public class User implements UserDetails {
     private String id;
     private String username;
     private String password;
+
+    @JsonDeserialize(using = GrantedAuthorityDeserializer.class)
     private List<GrantedAuthority> authorities;
 
     // Constructors, getters, and setters
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+       /* List<GrantedAuthority> authorities=   List.of(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return "USER";
+            }
+        });*/
         return authorities;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

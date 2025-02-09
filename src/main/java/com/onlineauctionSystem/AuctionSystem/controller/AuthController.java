@@ -10,9 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(path="/api/v1")
 public class AuthController {
 
     @Autowired
@@ -25,7 +27,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
+    public boolean login(@RequestBody User user) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -34,9 +36,9 @@ public class AuthController {
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return "Logged in successfully";
+            return true;
         } catch (AuthenticationException e) {
-            return "Invalid credentials";
+            return false;
         }
     }
 
