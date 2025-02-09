@@ -18,19 +18,19 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    @Autowired
+    @Autowired(required=true)
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public String login(@RequestBody User loginRequest) {
+    public String login(@RequestBody User user) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getUsername(),
-                            loginRequest.getPassword()
+                            user.getUsername(),
+                            user.getPassword()
                     )
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
